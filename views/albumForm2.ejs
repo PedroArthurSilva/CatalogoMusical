@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Discos Musicais</title>
+  <link rel="stylesheet" href="/albumForm.css">
+</head>
+<body>
+<header>
+    <h1>Catálogo Musical</h1>
+    <nav>
+        <a href="/albuns">Discos</a>
+        <a href="/artistas">Artistas</a>
+    </nav>
+</header>
+
+<main>
+    <h2>Editar Disco</h2>
+    <form action="/albuns/<%= album.id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+        <label for="titulo">Título:</label>
+        <input type="text" name="titulo" id="titulo" value="<%= album ? album.titulo : '' %>" required />
+        
+        <label for="anoLancamento">Ano de Lançamento:</label>
+        <input type="number" name="anoLancamento" id="anoLancamento" value="<%= album ? album.anoLancamento : '' %>" required />
+        
+        <label for="capa">Capa:</label>
+        <input type="file" name="capa" id="capa" required />
+        
+        <label for="artistas">Artistas:</label>
+        <select name="artistas[]" id="artistas" multiple>
+        <% artists.forEach(artista => { %>
+            <option value="<%= artista.id %>"><%= artista.nome %></option>
+        <% }) %>
+        </select>
+        
+        <label for="generos">Gêneros:</label>
+        <select name="generos[]" id="generos" multiple>
+        <% geners.forEach(genero => { %>
+            <option value="<%= genero.id %>"><%= genero.nome %></option>
+        <% }) %>
+        </select>
+        
+        <label for="faixas">Faixas (Título, Duração):</label>
+        <textarea name="faixas" id="faixas" required><%= album ? album.Faixa : '' %></textarea>
+        
+        <button type="submit">Atualizar</button>
+    </form>      
+</main>
+</body>
+</html>

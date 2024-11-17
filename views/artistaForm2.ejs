@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Discos Musicais</title>
+  <link rel="stylesheet" href="/albumForm.css">
+</head>
+<body>
+<header>
+    <h1>Catálogo Musical</h1>
+    <nav>
+        <a href="/albuns">Discos</a>
+        <a href="/artistas">Artistas</a>
+    </nav>
+</header>
+
+<main>
+    <h2>Novo Artista</h2>
+    <form action="/artistas/<%= artista.id %>?_method=PUT" method="POST">
+        <label for="nome">Nome:</label>
+        <input type="text" name="nome" id="nome" value="<%= artista ? artista.nome : '' %>" required />
+
+        <label for="generos">Gêneros:</label>
+        <select name="generos[]" id="generos" multiple>
+        <% geners.forEach(genero => { %>
+            <option value="<%= genero.id %>"><%= genero.nome %></option>
+        <% }) %>
+        </select>
+        
+        <button type="submit">Atualizar</button>
+    </form>
+</main>
+</body>
+</html>
