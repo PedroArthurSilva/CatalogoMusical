@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Catálogo de Discos Musicais</title>
+  <title>Cadastro de Artistas - Catálogo Musical</title>
   <link rel="stylesheet" href="/albumForm.css">
 </head>
 <body>
 <header>
-    <h1>Catálogo Musical</h1>
+    <h1>🎶 Catálogo Musical 🎵</h1>
     <nav>
         <a href="/albuns">Discos</a>
         <a href="/artistas">Artistas</a>
@@ -16,20 +16,29 @@
 </header>
 
 <main>
-    <h2>Novo Artista</h2>
-    <form action="/artistas" method="POST">
-        <label for="nome">Nome:</label>
-        <input type="text" name="nome" id="nome" required />
+    <h2>Cadastrar Novo Artista</h2>
+    <form action="/artistas" method="POST" class="form-artist">
+        <div class="form-group">
+            <label for="nome">Nome do Artista:</label>
+            <input type="text" name="nome" id="nome" placeholder="Ex.: João Silva" required />
+        </div>
 
-        <label for="generos">Gêneros:</label>
-        <select name="generos[]" id="generos" multiple>
-        <% geners.forEach(genero => { %>
-            <option value="<%= genero.id %>"><%= genero.nome %></option>
-        <% }) %>
-        </select>
-        
-        <button type="submit">Cadastrar</button>
+        <div class="form-group">
+            <label for="generos">Gêneros:</label>
+            <select name="generos[]" id="generos" multiple>
+                <% geners.forEach(genero => { %>
+                    <option value="<%= genero.id %>"><%= genero.nome %></option>
+                <% }) %>
+            </select>
+            <small>Pressione Ctrl (ou Cmd no Mac) para selecionar múltiplos gêneros</small>
+        </div>
+
+        <button type="submit">➕ Cadastrar Artista</button>
     </form>
 </main>
+
+<footer>
+    <p>&copy; 2024 Catálogo Musical. Todos os direitos reservados.</p>
+</footer>
 </body>
 </html>

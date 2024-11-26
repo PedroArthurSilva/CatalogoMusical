@@ -7,86 +7,85 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/albuns.css">
 </head>
 <body>
-  <header>
-    <h1>CATÁLOGO MUSICAL</h1>
+<header>
+    <h1>🎶 Catálogo Musical 🎵</h1>
     <nav>
-      <a href="/">Discos</a>
-      <a href="/artistas">Artistas</a>
+        <a href="/">Discos</a>
+        <a href="/artistas">Artistas</a>
     </nav>
-  </header>
+</header>
 
-  <div id="top-container">
-    <form action="/albuns/search" method="get">
-      <input type="text" name="query" placeholder="Buscar por título, artista, gênero ou ano de lançamento." required />
-      <button type="submit">Buscar</button>
+<div id="top-container">
+    <form action="/albuns/search" method="get" class="search-form">
+        <input type="text" name="query" placeholder="Buscar por título, artista, gênero ou ano." required />
+        <button type="submit">🔍 Buscar</button>
     </form>
-    <button id="novo-album" onclick="location.href='/albuns/novo'">Adicionar Novo Disco</button>
-  </div>
+    <button id="novo-album" onclick="location.href='/albuns/novo'">➕ Adicionar Novo Disco</button>
+</div>
 
-  <main>
-    <h2>DISCOS DISPONÍVEIS</h2>
+<main>
+    <h2>Discos Disponíveis</h2>
 
-    <div id="ajuste">
-      <div class="album-list">
+    <div class="album-list">
         <% albums.forEach(album => { %>
-          <div class="album-item">
-            <img id="img-Capa" src="/uploads/<%= album.capa %>" alt="Capa do Álbum <%= album.titulo %>">
-            <h3><%= album.titulo %></h3>
-            <p>Ano: <%= album.anoLancamento %></p>
-        
-            <p>Artistas: 
-              <% if (album.Artista && album.Artista.length > 0) { %>
-                <%= album.Artista.map(artista => artista.nome).join(', ') %>
-              <% } else { %>
-                Nenhum artista associado
-              <% } %>
-            </p>
-        
-            <p>Gêneros: 
-              <% if (album.Generos && album.Generos.length > 0) { %>
-                <%= album.Generos.map(genero => genero.nome).join(', ') %>
-              <% } else { %>
-                Nenhum gênero associado
-              <% } %>
-            </p>
-        
-            <h4>Faixas:</h4>
-            <ul>
-              <% if (album.Faixas && album.Faixas.length > 0) { %>
-                <% album.Faixas.forEach(faixa => { %>
-                  <li><%= faixa.titulo %>  <%= faixa.duracao %></li>
-                <% }) %>
-              <% } else { %>
-                Nenhuma faixa associada
-              <% } %>
-            </ul>
-        
-            <button onclick="location.href='/albuns/<%= album.id %>/editar'">Editar</button>
-            <form action="/albuns/<%= album.id %>?_method=DELETE" method="POST" class="delete-album-form">
-              <button type="submit">Remover</button>
-            </form>
-          </div>
-        <% }) %>      
-      </div>
+        <div class="album-item">
+            <img class="album-cover" src="/uploads/<%= album.capa %>" alt="Capa do Álbum <%= album.titulo %>">
+            <div class="album-info">
+                <h3><%= album.titulo %></h3>
+                <p><strong>Ano:</strong> <%= album.anoLancamento %></p>
+                <p><strong>Artistas:</strong> 
+                    <% if (album.Artista && album.Artista.length > 0) { %>
+                        <%= album.Artista.map(artista => artista.nome).join(', ') %>
+                    <% } else { %>
+                        Nenhum artista associado
+                    <% } %>
+                </p>
+                <p><strong>Gêneros:</strong> 
+                    <% if (album.Generos && album.Generos.length > 0) { %>
+                        <%= album.Generos.map(genero => genero.nome).join(', ') %>
+                    <% } else { %>
+                        Nenhum gênero associado
+                    <% } %>
+                </p>
+                <h4>Faixas:</h4>
+                <ul>
+                    <% if (album.Faixas && album.Faixas.length > 0) { %>
+                        <% album.Faixas.forEach(faixa => { %>
+                            <li><%= faixa.titulo %> (<%= faixa.duracao %>)</li>
+                        <% }) %>
+                    <% } else { %>
+                        Nenhuma faixa associada
+                    <% } %>
+                </ul>
+            </div>
+            <div class="album-actions">
+                <button onclick="location.href='/albuns/<%= album.id %>/editar'">✏️ Editar</button>
+                <form action="/albuns/<%= album.id %>?_method=DELETE" method="POST" class="delete-album-form">
+                    <button type="submit">🗑️ Remover</button>
+                </form>
+            </div>
+        </div>
+        <% }) %>
     </div>
-  </main>
-</body>
-<script>
-  const deleteForms = document.querySelectorAll('.delete-album-form');
+</main>
 
-  deleteForms.forEach(form => {
-    form.addEventListener('submit', function(event) {
-      const confirmDelete = confirm('Tem certeza de que deseja remover este álbum?');
-      
-      if (!confirmDelete) {
-        event.preventDefault();
-      }
+<footer>
+    <p>&copy; 2024 Catálogo Musical. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+    document.querySelectorAll('.delete-album-form').forEach(form => {
+        form.addEventListener('submit', function(event) {
+            if (!confirm('Tem certeza de que deseja remover este álbum?')) {
+                event.preventDefault();
+            }
+        });
     });
-  });
 </script>
+</body>
 </html>

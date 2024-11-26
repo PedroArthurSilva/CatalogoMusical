@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Catálogo de Discos Musicais</title>
+  <title>Editar Disco - Catálogo Musical</title>
   <link rel="stylesheet" href="/albumForm.css">
 </head>
 <body>
 <header>
-    <h1>Catálogo Musical</h1>
+    <h1>🎵 Catálogo Musical 🎶</h1>
     <nav>
         <a href="/albuns">Discos</a>
         <a href="/artistas">Artistas</a>
@@ -16,36 +16,66 @@
 </header>
 
 <main>
-    <h2>Editar Disco</h2>
+    <h2>Editar Informações do Disco</h2>
     <form action="/albuns/<%= album.id %>?_method=PUT" method="POST" enctype="multipart/form-data">
-        <label for="titulo">Título:</label>
-        <input type="text" name="titulo" id="titulo" value="<%= album ? album.titulo : '' %>" required />
-        
-        <label for="anoLancamento">Ano de Lançamento:</label>
-        <input type="number" name="anoLancamento" id="anoLancamento" value="<%= album ? album.anoLancamento : '' %>" required />
-        
-        <label for="capa">Capa:</label>
-        <input type="file" name="capa" id="capa" required />
-        
-        <label for="artistas">Artistas:</label>
-        <select name="artistas[]" id="artistas" multiple>
-        <% artists.forEach(artista => { %>
-            <option value="<%= artista.id %>"><%= artista.nome %></option>
-        <% }) %>
-        </select>
-        
-        <label for="generos">Gêneros:</label>
-        <select name="generos[]" id="generos" multiple>
-        <% geners.forEach(genero => { %>
-            <option value="<%= genero.id %>"><%= genero.nome %></option>
-        <% }) %>
-        </select>
-        
-        <label for="faixas">Faixas (Título, Duração):</label>
-        <textarea name="faixas" id="faixas" required><%= album ? album.Faixa : '' %></textarea>
-        
-        <button type="submit">Atualizar</button>
+        <div>
+            <label for="titulo">Título:</label>
+            <input type="text" name="titulo" id="titulo" value="<%= album ? album.titulo : '' %>" placeholder="Insira o novo título" required />
+        </div>
+
+        <div>
+            <label for="anoLancamento">Ano de Lançamento:</label>
+            <input type="number" name="anoLancamento" id="anoLancamento" value="<%= album ? album.anoLancamento : '' %>" placeholder="Ex.: 2024" required />
+        </div>
+
+        <div>
+            <label for="capa">Capa Atual:</label>
+            <div>
+                <% if (album && album.capaUrl) { %>
+                    <img src="<%= album.capaUrl %>" alt="Capa do Disco" style="max-height: 150px;">
+                <% } else { %>
+                    <p>Nenhuma capa carregada</p>
+                <% } %>
+            </div>
+            <label for="capa">Alterar Capa:</label>
+            <input type="file" name="capa" id="capa" accept="image/*" />
+        </div>
+
+        <div>
+            <label for="artistas">Artistas:</label>
+            <select name="artistas[]" id="artistas" multiple>
+                <% artists.forEach(artista => { %>
+                    <option value="<%= artista.id %>" <%= album && album.artistas.includes(artista.id) ? 'selected' : '' %>>
+                        <%= artista.nome %>
+                    </option>
+                <% }) %>
+            </select>
+        </div>
+
+        <div>
+            <label for="generos">Gêneros:</label>
+            <select name="generos[]" id="generos" multiple>
+                <% geners.forEach(genero => { %>
+                    <option value="<%= genero.id %>" <%= album && album.generos.includes(genero.id) ? 'selected' : '' %>>
+                        <%= genero.nome %>
+                    </option>
+                <% }) %>
+            </select>
+        </div>
+
+        <div>
+            <label for="faixas">Faixas (Título, Duração):</label>
+            <textarea name="faixas" id="faixas" placeholder="Ex.: Faixa 1, 3:45\nFaixa 2, 4:20" required>
+                <%= album ? album.faixas : '' %>
+            </textarea>
+        </div>
+
+        <button type="submit">Salvar Alterações 💾</button>
     </form>      
 </main>
+
+<footer>
+    <p>&copy; 2024 Catálogo Musical. Todos os direitos reservados.</p>
+</footer>
 </body>
 </html>

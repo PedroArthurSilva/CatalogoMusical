@@ -3,72 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Catálogo de Discos Musicais</title>
+  <title>Catálogo de Artistas - Catálogo Musical</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/artistas.css">
 </head>
 <body>
-  <header>
-    <h1>CATÁLOGO MUSICAL</h1>
+<header>
+    <h1>🎵 Catálogo Musical - Artistas 🎤</h1>
     <nav>
       <a href="/">Discos</a>
-      <a href="/artistas">Artistas</a>
+      <a href="/artistas" class="active">Artistas</a>
     </nav>
-  </header>
+</header>
 
-  <div id="top-container">
-    <form action="/artistas/search" method="get">
-      <input type="text" name="query" placeholder="Buscar por nome ou gênero" required />
-      <button type="submit">Buscar</button>
-    </form>
-    <button id="novo-artista" onclick="location.href='/artistas/novo'">Adicionar Novo Artista</button>
-  </div>
+<div id="top-container">
+  <form action="/artistas/search" method="get" class="search-form">
+    <input 
+      type="text" 
+      name="query" 
+      placeholder="Buscar por nome ou gênero..." 
+      required 
+      aria-label="Buscar artistas"
+    />
+    <button type="submit">🔍 Buscar</button>
+  </form>
+  <button id="novo-artista" onclick="location.href='/artistas/novo'">➕ Adicionar Novo Artista</button>
+</div>
 
-  <main>
-    <h2>ARTISTAS</h2>
-    <div id="ajuste">
-      <div class="artist-list">
-        <% artists.forEach(artista => { %>
-          <div class="artist-item">
-            <h3><%= artista.nome %></h3>
-            <p>Gêneros: 
-              <%= artista.Generos.map(genero => genero.nome).join(', ') %>
-            </p>
-            <h4>Discos:</h4>
-            <ul>
-              <% if (artista.Albums && artista.Albums.length > 0) { %>
-                <% artista.Albums.forEach(album => { %>
-                  <li><%= album.titulo %> (Lançado em <%= album.anoLancamento %>)</li>
-                <% }) %>
-              <% } else { %>
-                <li>Nenhum disco associado</li>
-              <% } %>
-            </ul>
-            <button onclick="location.href='/artistas/<%= artista.id %>/editar'">Editar</button>
-            <form action="/artistas/<%= artista.id %>?_method=DELETE" method="POST" class="delete-artist-form">
-              <button type="submit">Remover</button>
+<main>
+  <h2>Lista de Artistas</h2>
+  <div id="ajuste">
+    <div class="artist-list">
+      <% artists.forEach(artista => { %>
+        <div class="artist-item">
+          <h3><%= artista.nome %></h3>
+          <p><strong>Gêneros:</strong> 
+            <%= artista.Generos.map(genero => genero.nome).join(', ') || 'Nenhum gênero associado' %>
+          </p>
+          <h4>Discos:</h4>
+          <ul>
+            <% if (artista.Albums && artista.Albums.length > 0) { %>
+              <% artista.Albums.forEach(album => { %>
+                <li><%= album.titulo %> (Lançado em <%= album.anoLancamento %>)</li>
+              <% }) %>
+            <% } else { %>
+              <li>Nenhum disco associado</li>
+            <% } %>
+          </ul>
+          <div class="artist-actions">
+            <button onclick="location.href='/artistas/<%= artista.id %>/editar'">✏️ Editar</button>
+            <form 
+              action="/artistas/<%= artista.id %>?_method=DELETE" 
+              method="POST" 
+              class="delete-artist-form"
+            >
+              <button type="submit">🗑️ Remover</button>
             </form>
           </div>
-        <% }) %>
-      </div>
+        </div>
+      <% }) %>
     </div>
-  </main>
-</body>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2024 Catálogo Musical. Todos os direitos reservados.</p>
+</footer>
+
 <script>
   const deleteForms = document.querySelectorAll('.delete-artist-form');
 
   deleteForms.forEach(form => {
     form.addEventListener('submit', function(event) {
-      const confirmDelete = confirm('Tem certeza de que deseja remover este artista?');
-      
+      const artistName = form.closest('.artist-item').querySelector('h3').innerText;
+      const confirmDelete = confirm(`Tem certeza de que deseja remover o artista "${artistName}"?`);
+
       if (!confirmDelete) {
         event.preventDefault();
       }
     });
   });
 </script>
+</body>
 </html>

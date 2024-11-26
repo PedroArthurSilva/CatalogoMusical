@@ -8,7 +8,7 @@
 </head>
 <body>
 <header>
-    <h1>Catálogo Musical</h1>
+    <h1>🎵 Catálogo Musical 🎶</h1>
     <nav>
         <a href="/albuns">Discos</a>
         <a href="/artistas">Artistas</a>
@@ -16,36 +16,30 @@
 </header>
 
 <main>
-    <h2>Novo Disco</h2>
+    <h2>Cadastro de Novo Disco</h2>
     <form action="/albuns" method="POST" enctype="multipart/form-data">
-        <label for="titulo">Título:</label>
-        <input type="text" name="titulo" id="titulo" required />
+        <div>
+            <label for="titulo">Título:</label>
+            <input type="text" name="titulo" id="titulo" placeholder="Insira o título do disco" required />
+        </div>
         
-        <label for="anoLancamento">Ano de Lançamento:</label>
-        <input type="number" name="anoLancamento" id="anoLancamento" required />
+        <div>
+            <label for="anoLancamento">Ano de Lançamento:</label>
+            <input type="number" name="anoLancamento" id="anoLancamento" placeholder="Ex.: 2024" required />
+        </div>
         
-        <label for="capa">Capa:</label>
-        <input type="file" name="capa" id="capa" required />
+        <div>
+            <label for="capa">Capa:</label>
+            <input type="file" name="capa" id="capa" accept="image/*" required />
+        </div>
         
-        <label for="artistas">Artistas:</label>
-        <select name="artistas[]" id="artistas" multiple>
-        <% artists.forEach(artista => { %>
-            <option value="<%= artista.id %>"><%= artista.nome %></option>
-        <% }) %>
-        </select>
+        <div>
+            <label for="artistas">Artistas:</label>
+            <select name="artistas[]" id="artistas" multiple>
+                <% artists.forEach(artista => { %>
+                    <option value="<%= artista.id %>"><%= artista.nome %></option>
+                <% }) %>
+            </select>
+        </div>
         
-        <label for="generos">Gêneros:</label>
-        <select name="generos[]" id="generos" multiple>
-        <% geners.forEach(genero => { %>
-            <option value="<%= genero.id %>"><%= genero.nome %></option>
-        <% }) %>
-        </select>
-        
-        <label for="faixas">Faixas (Título, Duração):</label>
-        <textarea name="faixas" id="faixas" required></textarea>
-        
-        <button type="submit">Cadastrar</button>
-    </form>      
-</main>
-</body>
-</html>
+        <div
